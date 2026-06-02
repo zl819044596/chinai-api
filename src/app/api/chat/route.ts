@@ -52,7 +52,7 @@ function mockResponse(model: string, messages: { role: string; content: string }
 }
 
 // Mock 流式响应
-async function* mockStream(model: string, _messages: { role: string; content: string }[]) {
+async function* mockStream(model: string) {
   const config = MODELS[model];
   const text = `[MOCK MODE - ${config?.mockName || model}] This is a simulated streaming response. Add your API keys to .env.local to get real responses.`;
   const words = text.split(" ");
@@ -130,7 +130,7 @@ export async function POST(req: NextRequest) {
     if (!config.apiKey) {
       if (stream) {
         const encoder = new TextEncoder();
-        const iterator = mockStream(model, messages);
+        const iterator = mockStream(model);
 
         const readable = new ReadableStream({
           async pull(controller) {
