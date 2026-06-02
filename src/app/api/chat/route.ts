@@ -4,7 +4,7 @@ import {
   validateApiKey,
   checkRateLimit,
   generateApiKey,
-} from "@/lib/auth";
+} from "@/lib/auth-config";
 
 export const runtime = "edge";
 
@@ -85,7 +85,7 @@ async function* mockStream(model: string) {
 
 export async function POST(req: NextRequest) {
   try {
-    const body = await req.json();
+    const body = await req.json() as { model?: string; messages?: Array<{role: string; content: string}>; stream?: boolean };
     const { model = "deepseek-chat", messages, stream = false } = body;
 
     // 验证模型
@@ -153,7 +153,7 @@ export async function POST(req: NextRequest) {
         });
       }
 
-      return NextResponse.json(mockResponse(model, messages), { headers: rateLimitHeaders });
+      return NextResponse.json(mockResponse(model, messages || []), { headers: rateLimitHeaders });
     }
 
     // 转发请求到国内 API

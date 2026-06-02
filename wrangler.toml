@@ -2,11 +2,10 @@ name = "chinai-api"
 compatibility_date = "2026-06-02"
 compatibility_flags = ["nodejs_compat"]
 
-# D1 数据库 (后续添加)
-# [[d1_databases]]
-# binding = "DB"
-# database_name = "chinai-db"
-# database_id = "your-db-id"
+[[d1_databases]]
+binding = "DB"
+database_name = "chinai-api"
+database_id = "a481353d-8a02-4767-8ac1-9d1bccb810af"
 
 # KV 命名空间 (后续添加)
 # [[kv_namespaces]]
