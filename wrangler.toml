@@ -2,10 +2,6 @@ name = "chinai-api"
 compatibility_date = "2026-06-02"
 compatibility_flags = ["nodejs_compat"]
 
-# Cloudflare Pages 配置
-[site]
-bucket = ".vercel/output/static"
-
 # D1 数据库 (后续添加)
 # [[d1_databases]]
 # binding = "DB"
