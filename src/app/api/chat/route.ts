@@ -28,7 +28,7 @@ const MODELS: Record<string, { baseURL: string; apiKey: string; mockName: string
 };
 
 // Mock 响应（没有 API Key 时用于演示）
-function mockResponse(model: string, messages: any[]) {
+function mockResponse(model: string, messages: { role: string; content: string }[]) {
   const lastMsg = messages[messages.length - 1]?.content || "";
   const config = MODELS[model];
 
@@ -52,7 +52,7 @@ function mockResponse(model: string, messages: any[]) {
 }
 
 // Mock 流式响应
-async function* mockStream(model: string, messages: any[]) {
+async function* mockStream(model: string, _messages: { role: string; content: string }[]) {
   const config = MODELS[model];
   const text = `[MOCK MODE - ${config?.mockName || model}] This is a simulated streaming response. Add your API keys to .env.local to get real responses.`;
   const words = text.split(" ");

@@ -27,7 +27,8 @@ export async function POST(req: NextRequest) {
       });
     }
 
-    // Real Stripe integration
+    // Real Stripe integration (dynamic import to avoid edge runtime issues)
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
     const stripe = require("stripe")(STRIPE_SECRET_KEY);
     const session = await stripe.checkout.sessions.create({
       mode: "subscription",
