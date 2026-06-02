@@ -1,5 +1,6 @@
 import { getCookie, serializeCookie } from "./cookie-utils";
-import { signSession } from "./session";
+import { signSession, verifySession } from "./session";
+import { storeSession } from "./session-store";
 
 type Env = {
   DB: D1Database;
@@ -110,7 +111,7 @@ export async function handleGoogleCallback(request: Request, env: Env) {
   }
 
   // 5. 签 session
-  const session = await signSession(
+  const sessionToken = await signSession(
     {
       user_id: user.id,
       email: user.email,
@@ -120,35 +121,20 @@ export async function handleGoogleCallback(request: Request, env: Env) {
     env.SESSION_SECRET
   );
 
-  // 6. 设置 cookie，并清除 oauth_state
-  const res = new Response(null, {
-    status: 302,
-    headers: {
-      Location: env.APP_ORIGIN,
-    },
+  // 6. 存储 session 到内存
+  await storeSession(sessionToken, {
+    user_id: user.id,
+    email: user.email,
+    plan: user.plan,
   });
 
-  res.headers.append(
-    "Set-Cookie",
-    serializeCookie("session", session, {
-      httpOnly: true,
-      secure: true,
-      sameSite: "Lax",
-      path: "/",
-      maxAge: 7 * 24 * 60 * 60,
-    })
-  );
-
-  res.headers.append(
-    "Set-Cookie",
-    serializeCookie("oauth_state", "", {
-      httpOnly: true,
-      secure: true,
-      sameSite: "Lax",
-      path: "/",
-      maxAge: 0,
-    })
-  );
-
-  return res;
+  // 7. 返回 token（让上层决定怎么传给前端）
+  return {
+    token: sessionToken,
+    user: {
+      id: user.id,
+      email: user.email,
+      plan: user.plan,
+    },
+  };
 }

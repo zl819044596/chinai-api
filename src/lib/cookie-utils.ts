@@ -15,6 +15,7 @@ export function serializeCookie(
     sameSite?: "Strict" | "Lax" | "None";
     path?: string;
     maxAge?: number;
+    partitioned?: boolean;
   } = {}
 ): string {
   let cookie = `${name}=${encodeURIComponent(value)}`;
@@ -24,6 +25,7 @@ export function serializeCookie(
   if (options.sameSite) cookie += `; SameSite=${options.sameSite}`;
   if (options.path) cookie += `; Path=${options.path}`;
   if (options.maxAge !== undefined) cookie += `; Max-Age=${options.maxAge}`;
+  if (options.partitioned) cookie += "; Partitioned";
 
   return cookie;
 }

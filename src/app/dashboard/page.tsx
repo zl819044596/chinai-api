@@ -11,14 +11,19 @@ export default function Dashboard() {
   useEffect(() => {
     fetch("/api/user/profile")
       .then(r => r.json())
-      .then(data => {
+      .then((data: any) => {
         if (data.user) {
           setUser(data.user);
           setName(data.user.name || "");
         }
         setLoading(false);
-      });
+      })
+      .catch(() => setLoading(false));
   }, []);
+
+  const handleLogout = () => {
+    window.location.href = "/api/auth/logout";
+  };
 
   const handleUpdateName = async () => {
     const res = await fetch("/api/user/profile", {

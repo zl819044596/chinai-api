@@ -181,9 +181,38 @@ export default function Playground() {
             onChange={(e) => setModel(e.target.value)}
             className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2"
           >
-            <option value="deepseek-chat">DeepSeek-V3</option>
-            <option value="qwen-max">Qwen-Max</option>
-            <option value="glm-4">GLM-4</option>
+            <optgroup label="DeepSeek">
+              <option value="deepseek-chat">DeepSeek-V3</option>
+              <option value="deepseek-reasoner">DeepSeek-R1</option>
+            </optgroup>
+            <optgroup label="阿里 Qwen">
+              <option value="qwen-max">Qwen-Max</option>
+              <option value="qwen-plus">Qwen-Plus</option>
+              <option value="qwen-turbo">Qwen-Turbo</option>
+            </optgroup>
+            <optgroup label="智谱 GLM">
+              <option value="glm-4">GLM-4</option>
+              <option value="glm-4-plus">GLM-4-Plus</option>
+            </optgroup>
+            <optgroup label="百度">
+              <option value="ernie-bot-4">ERNIE-Bot-4</option>
+            </optgroup>
+            <optgroup label="字节豆包">
+              <option value="doubao-pro">Doubao-Pro</option>
+              <option value="doubao-lite">Doubao-Lite</option>
+            </optgroup>
+            <optgroup label="MiniMax">
+              <option value="abab6.5s">MiniMax-6.5s</option>
+            </optgroup>
+            <optgroup label="零一万物">
+              <option value="yi-large">Yi-Large</option>
+            </optgroup>
+            <optgroup label="月之暗面">
+              <option value="kimi-latest">Kimi-Latest</option>
+            </optgroup>
+            <optgroup label="讯飞">
+              <option value="spark-v3.5">Spark-V3.5</option>
+            </optgroup>
           </select>
         </div>
 

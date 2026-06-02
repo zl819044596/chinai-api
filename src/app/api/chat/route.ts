@@ -5,32 +5,14 @@ import {
   checkRateLimit,
   generateApiKey,
 } from "@/lib/auth-config";
+import { getModelConfig } from "@/lib/models";
 
 export const runtime = "edge";
-
-// 支持的模型配置
-const MODELS: Record<string, { baseURL: string; apiKey: string; mockName: string }> = {
-  "deepseek-chat": {
-    baseURL: "https://api.deepseek.com/v1",
-    apiKey: process.env.DEEPSEEK_API_KEY || "",
-    mockName: "DeepSeek-V3",
-  },
-  "qwen-max": {
-    baseURL: "https://dashscope.aliyuncs.com/compatible-mode/v1",
-    apiKey: process.env.QWEN_API_KEY || "",
-    mockName: "Qwen-Max",
-  },
-  "glm-4": {
-    baseURL: "https://open.bigmodel.cn/api/paas/v4",
-    apiKey: process.env.GLM_API_KEY || "",
-    mockName: "GLM-4",
-  },
-};
 
 // Mock 响应（没有 API Key 时用于演示）
 function mockResponse(model: string, messages: { role: string; content: string }[]) {
   const lastMsg = messages[messages.length - 1]?.content || "";
-  const config = MODELS[model];
+  const config = getModelConfig(model);
 
   return {
     id: `mock-${Date.now()}`,
@@ -42,7 +24,7 @@ function mockResponse(model: string, messages: { role: string; content: string }
         index: 0,
         message: {
           role: "assistant",
-          content: `[MOCK MODE - ${config?.mockName || model}]\n\nThis is a simulated response. To get real AI responses, please contact us to add your API key.\n\nYour prompt was: "${lastMsg}"`,
+          content: `[MOCK MODE - ${config?.modelName || model}]\n\nThis is a simulated response. To get real AI responses, please contact us to add your API key.\n\nYour prompt was: "${lastMsg}"`,
         },
         finish_reason: "stop",
       },
@@ -53,8 +35,8 @@ function mockResponse(model: string, messages: { role: string; content: string }
 
 // Mock 流式响应
 async function* mockStream(model: string) {
-  const config = MODELS[model];
-  const text = `[MOCK MODE - ${config?.mockName || model}] This is a simulated streaming response. Add your API keys to .env.local to get real responses.`;
+  const config = getModelConfig(model);
+  const text = `[MOCK MODE - ${config?.modelName || model}] This is a simulated streaming response. Add your API keys to .env.local to get real responses.`;
   const words = text.split(" ");
 
   for (let i = 0; i < words.length; i++) {
@@ -89,7 +71,7 @@ export async function POST(req: NextRequest) {
     const { model = "deepseek-chat", messages, stream = false } = body;
 
     // 验证模型
-    const config = MODELS[model];
+    const config = getModelConfig(model);
     if (!config) {
       return NextResponse.json(
         { error: "Model not supported" },
