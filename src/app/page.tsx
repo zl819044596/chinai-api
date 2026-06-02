@@ -35,12 +35,6 @@ export default function Home() {
         <div className="flex gap-4 items-center">
           <Link href="/playground" className="text-gray-400 hover:text-white">Playground</Link>
           <Link href="/docs" className="text-gray-400 hover:text-white">Docs</Link>
-          <Link
-            href="/login"
-            className="bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded-lg font-semibold text-sm"
-          >
-            Sign In
-          </Link>
         </div>
       </header>
 
