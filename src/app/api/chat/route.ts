@@ -42,7 +42,7 @@ function mockResponse(model: string, messages: { role: string; content: string }
         index: 0,
         message: {
           role: "assistant",
-          content: `[MOCK MODE - ${config?.mockName || model}]\n\nThis is a simulated response. To get real AI responses, add your API key to .env.local:\n\nDEEPSEEK_API_KEY=your_key\nQWEN_API_KEY=your_key\nGLM_API_KEY=your_key\n\nThen restart the dev server.\n\nYour prompt was: "${lastMsg}"`,
+          content: `[MOCK MODE - ${config?.mockName || model}]\n\nThis is a simulated response. To get real AI responses, please contact us to add your API key.\n\nYour prompt was: "${lastMsg}"`,
         },
         finish_reason: "stop",
       },
