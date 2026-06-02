@@ -1,31 +1,29 @@
-"use client";
-
 import Link from "next/link";
-import { useState } from "react";
+import { cookies } from "next/headers";
+import { verifySession } from "@/lib/session";
 
-export default function Home() {
-  const [loading, setLoading] = useState<string | null>(null);
+export const runtime = "edge";
 
-  const handleSubscribe = async (tier: "pro" | "business") => {
-    setLoading(tier);
-    try {
-      const res = await fetch("/api/checkout", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ tier }),
-      });
-      const data = await res.json();
-      if (data.url) {
-        window.location.href = data.url;
-      } else {
-        alert("Checkout failed: " + (data.error || "Unknown error"));
-        setLoading(null);
-      }
-    } catch (err) {
-      alert("Error: " + (err instanceof Error ? err.message : String(err)));
-      setLoading(null);
-    }
-  };
+async function getUser() {
+  const cookieStore = await cookies();
+  const sessionCookie = cookieStore.get("session");
+  if (!sessionCookie) return null;
+
+  try {
+    const payload = await verifySession(sessionCookie.value, process.env.SESSION_SECRET!);
+    if (!payload) return null;
+    return {
+      id: payload.user_id as string,
+      email: payload.email as string,
+      plan: payload.plan as string,
+    };
+  } catch {
+    return null;
+  }
+}
+
+export default async function Home() {
+  const user = await getUser();
 
   return (
     <main className="min-h-screen">
@@ -35,6 +33,27 @@ export default function Home() {
         <div className="flex gap-4 items-center">
           <Link href="/playground" className="text-gray-400 hover:text-white">Playground</Link>
           <Link href="/docs" className="text-gray-400 hover:text-white">Docs</Link>
+          {user ? (
+            <div className="flex items-center gap-3">
+              <span className="text-sm text-gray-400">{user.email}</span>
+              <span className="text-xs bg-blue-500/20 text-blue-400 px-2 py-1 rounded">
+                {user.plan}
+              </span>
+              <a
+                href="/api/auth/logout"
+                className="text-sm text-gray-400 hover:text-white"
+              >
+                Logout
+              </a>
+            </div>
+          ) : (
+            <a
+              href="/api/auth/login"
+              className="bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded-lg text-sm font-semibold"
+            >
+              Sign In
+            </a>
+          )}
         </div>
       </header>
 
@@ -88,22 +107,21 @@ export default function Home() {
         <h2 className="text-3xl font-bold text-center mb-12">Simple Pricing</h2>
         <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
           {[
-            { name: "Free", price: "$0", tokens: "100 requests/day", cta: "Get Started", tier: null as null },
-            { name: "Pro", price: "$19/mo", tokens: "1M tokens", cta: "Subscribe", tier: "pro" as const },
-            { name: "Business", price: "$49/mo", tokens: "5M tokens", cta: "Subscribe", tier: "business" as const },
+            { name: "Free", price: "$0", tokens: "100 requests/day", cta: "Get Started", tier: null },
+            { name: "Pro", price: "$19/mo", tokens: "1M tokens", cta: "Subscribe", tier: "pro" },
+            { name: "Business", price: "$49/mo", tokens: "5M tokens", cta: "Subscribe", tier: "business" },
           ].map((p) => (
             <div key={p.name} className={`p-6 rounded-xl border ${p.name === "Pro" ? "border-blue-500 bg-gray-800" : "border-gray-700"}`}>
               <h3 className="text-xl font-semibold mb-2">{p.name}</h3>
               <p className="text-3xl font-bold mb-4">{p.price}</p>
               <p className="text-gray-400 mb-6">{p.tokens}</p>
               {p.tier ? (
-                <button
-                  onClick={() => handleSubscribe(p.tier!)}
-                  disabled={loading === p.tier}
-                  className="w-full bg-blue-500 hover:bg-blue-600 disabled:opacity-50 py-2 rounded-lg font-semibold"
+                <Link
+                  href={`/checkout?tier=${p.tier}`}
+                  className="block w-full bg-blue-500 hover:bg-blue-600 py-2 rounded-lg font-semibold text-center"
                 >
-                  {loading === p.tier ? "..." : p.cta}
-                </button>
+                  {p.cta}
+                </Link>
               ) : (
                 <Link
                   href="/playground"
