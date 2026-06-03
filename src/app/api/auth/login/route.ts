@@ -1,6 +1,6 @@
 import { handleGoogleLogin } from "@/lib/oauth-login";
 
-export const runtime = "edge";
+export const runtime = "nodejs";
 
 export async function GET(request: Request) {
   const url = new URL(request.url);

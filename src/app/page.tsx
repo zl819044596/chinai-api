@@ -26,118 +26,141 @@ export default async function Home() {
   const user = await getUser();
 
   return (
-    <main className="min-h-screen">
+    <main className="min-h-screen bg-gradient-to-br from-white via-purple-50 to-blue-50 text-gray-900">
       {/* Header */}
-      <header className="px-6 py-4 flex justify-between items-center border-b border-gray-800">
-        <Link href="/" className="text-xl font-bold">ChinaAI API</Link>
-        <div className="flex gap-4 items-center">
-          <Link href="/playground" className="text-gray-400 hover:text-white">Playground</Link>
-          <Link href="/docs" className="text-gray-400 hover:text-white">Docs</Link>
+      <header className="px-6 py-4 flex justify-between items-center border-b border-gray-200">
+        <Link href="/" className="text-xl font-bold flex items-center gap-2">
+          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-sm font-bold text-white">
+            C
+          </div>
+          <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+            ChinaAI API
+          </span>
+        </Link>
+        <div className="flex gap-6 items-center text-sm">
+          <Link href="/" className="text-blue-600 font-medium border-b-2 border-blue-600 pb-1">首页</Link>
+          <a href="https://chinaiapi.com" className="text-gray-600 hover:text-gray-900 transition">控制台</a>
+          <Link href="/docs" className="text-gray-600 hover:text-gray-900 transition">文档</Link>
+          <Link href="/about" className="text-gray-600 hover:text-gray-900 transition">关于</Link>
           {user ? (
-            <div className="flex items-center gap-3">
-              <span className="text-sm text-gray-400">{user.email}</span>
-              <span className="text-xs bg-blue-500/20 text-blue-400 px-2 py-1 rounded">
-                {user.plan}
-              </span>
-              <a
-                href="/api/auth/logout"
-                className="text-sm text-gray-400 hover:text-white"
-              >
-                Logout
-              </a>
-            </div>
+            <a href="https://chinaiapi.com" className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition">
+              控制台
+            </a>
           ) : (
-            <a
-              href="/api/auth/login"
-              className="bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded-lg text-sm font-semibold"
-            >
-              Sign In
+            <a href="https://chinaiapi.com" className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition">
+              登录
             </a>
           )}
         </div>
       </header>
 
-      {/* Hero */}
-      <section className="px-6 py-24 text-center">
-        <h1 className="text-5xl font-bold mb-6">
-          Access Chinese AI Models
-          <br />
-          <span className="text-blue-400">Without Barriers</span>
-        </h1>
-        <p className="text-xl text-gray-400 mb-8 max-w-2xl mx-auto">
-          Unified API for DeepSeek, Qwen, GLM, and more.
-          No Chinese phone number. No identity verification. Just works.
-        </p>
-        <div className="flex gap-4 justify-center">
-          <Link
-            href="/playground"
-            className="bg-blue-500 hover:bg-blue-600 px-8 py-3 rounded-lg font-semibold"
-          >
-            Try Free
-          </Link>
-          <Link
-            href="/docs"
-            className="border border-gray-600 hover:border-gray-400 px-8 py-3 rounded-lg font-semibold"
-          >
-            Documentation
-          </Link>
-        </div>
-      </section>
-
-      {/* Models */}
-      <section className="px-6 py-16 bg-gray-900">
-        <h2 className="text-3xl font-bold text-center mb-12">Supported Models</h2>
-        <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
-          {[
-            { name: "DeepSeek-V3", desc: "Top reasoning, 671B params", price: "$0.50/M tokens" },
-            { name: "Qwen-Max", desc: "Alibaba flagship", price: "$0.80/M tokens" },
-            { name: "GLM-4", desc: "Zhipu AI general purpose", price: "$0.60/M tokens" },
-          ].map((m) => (
-            <div key={m.name} className="bg-gray-800 p-6 rounded-xl">
-              <h3 className="text-xl font-semibold mb-2">{m.name}</h3>
-              <p className="text-gray-400 mb-4">{m.desc}</p>
-              <p className="text-blue-400 font-mono">{m.price}</p>
+      {/* Main Content */}
+      <div className="max-w-6xl mx-auto px-6 py-16">
+        <div className="grid md:grid-cols-2 gap-12 items-start">
+          
+          {/* Left Hero */}
+          <div>
+            <h1 className="text-4xl md:text-5xl font-bold mb-4">
+              <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                ChinaAI API
+              </span>
+            </h1>
+            <p className="text-lg text-gray-700 mb-2 font-medium">
+              更强大的模型，更低的价格，更简单的接入
+            </p>
+            <p className="text-gray-500 mb-8 leading-relaxed">
+              致力于为开发者提供快速、便捷的国产大模型 API 调用方案，一站式接入 DeepSeek、通义千问、智谱等顶尖国产 AI 模型。
+            </p>
+            
+            <div className="flex flex-col sm:flex-row gap-4 mb-8">
+              <a href="https://chinaiapi.com" className="inline-flex justify-center bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-6 py-3 rounded-xl font-semibold transition">
+                开启 AI 新体验
+              </a>
+              <Link href="/docs" className="inline-flex justify-center border border-gray-300 hover:border-gray-400 px-6 py-3 rounded-xl font-semibold transition">
+                API 文档
+              </Link>
             </div>
-          ))}
-        </div>
-      </section>
 
-      {/* Pricing */}
-      <section className="px-6 py-16">
-        <h2 className="text-3xl font-bold text-center mb-12">Simple Pricing</h2>
-        <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
-          {[
-            { name: "Free", price: "$0", tokens: "100 requests/day", cta: "Get Started", tier: null },
-            { name: "Pro", price: "$19/mo", tokens: "1M tokens", cta: "Subscribe", tier: "pro" },
-            { name: "Business", price: "$49/mo", tokens: "5M tokens", cta: "Subscribe", tier: "business" },
-          ].map((p) => (
-            <div key={p.name} className={`p-6 rounded-xl border ${p.name === "Pro" ? "border-blue-500 bg-gray-800" : "border-gray-700"}`}>
-              <h3 className="text-xl font-semibold mb-2">{p.name}</h3>
-              <p className="text-3xl font-bold mb-4">{p.price}</p>
-              <p className="text-gray-400 mb-6">{p.tokens}</p>
-              {p.tier ? (
-                <Link
-                  href={`/checkout?tier=${p.tier}`}
-                  className="block w-full bg-blue-500 hover:bg-blue-600 py-2 rounded-lg font-semibold text-center"
-                >
-                  {p.cta}
-                </Link>
-              ) : (
-                <Link
-                  href="/playground"
-                  className="block w-full bg-blue-500 hover:bg-blue-600 py-2 rounded-lg font-semibold text-center"
-                >
-                  {p.cta}
-                </Link>
-              )}
+            <p className="text-sm text-gray-400 mb-6">
+              已接入 10+ 国产大模型
+            </p>
+
+            {/* Model Provider Icons - 强制横排 */}
+            <div className="flex flex-row gap-3 flex-wrap">
+              {['DeepSeek', 'Qwen', 'GLM', 'Kimi', 'Doubao'].map((name) => (
+                <div key={name} className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-100 to-purple-100 flex items-center justify-center text-xs font-bold text-gray-600 border border-gray-200 flex-shrink-0">
+                  {name[0]}
+                </div>
+              ))}
             </div>
-          ))}
+          </div>
+
+          {/* Right Quick Start */}
+          <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6">
+            <h2 className="text-xl font-bold mb-6">快速开始</h2>
+            
+            <div className="flex gap-4 mb-6 text-sm border-b border-gray-100 pb-4">
+              <span className="text-purple-600 font-medium border-b-2 border-purple-600 pb-2">调用接口</span>
+              <span className="text-gray-400">直接使用</span>
+            </div>
+
+            <div className="space-y-6">
+              {/* Step 1 */}
+              <div className="flex gap-4">
+                <div className="w-8 h-8 rounded-full bg-purple-100 text-purple-600 flex items-center justify-center font-bold text-sm shrink-0">
+                  1
+                </div>
+                <div>
+                  <h3 className="font-semibold mb-1">注册登录</h3>
+                  <p className="text-sm text-gray-500">
+                    <a href="https://chinaiapi.com" className="text-blue-600 hover:underline">登录</a> 控制台，充值即可使用
+                  </p>
+                </div>
+              </div>
+
+              {/* Step 2 */}
+              <div className="flex gap-4">
+                <div className="w-8 h-8 rounded-full bg-purple-100 text-purple-600 flex items-center justify-center font-bold text-sm shrink-0">
+                  2
+                </div>
+                <div>
+                  <h3 className="font-semibold mb-1">创建令牌</h3>
+                  <p className="text-sm text-gray-500">
+                    进入 <a href="https://chinaiapi.com" className="text-blue-600 hover:underline">API 令牌管理</a> 页面创建 API 令牌
+                  </p>
+                </div>
+              </div>
+
+              {/* Step 3 */}
+              <div className="flex gap-4">
+                <div className="w-8 h-8 rounded-full bg-purple-100 text-purple-600 flex items-center justify-center font-bold text-sm shrink-0">
+                  3
+                </div>
+                <div>
+                  <h3 className="font-semibold mb-1">调用接口</h3>
+                  <p className="text-sm text-gray-500 mb-3">
+                    使用创建的令牌调用 API
+                  </p>
+                  <div className="bg-gray-900 rounded-lg p-4 text-sm">
+                    <pre className="text-green-400 overflow-x-auto">
+{`curl https://chinaiapi.com/v1/chat/completions \\
+  -H "Authorization: Bearer sk-xxx" \\
+  -d '{
+    "model": "deepseek-chat",
+    "messages": [{"role":"user","content":"Hello"}]
+  }'`}
+                    </pre>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-      </section>
+      </div>
 
       {/* Footer */}
-      <footer className="px-6 py-8 text-center text-gray-500 border-t border-gray-800">
-        <p>© 2025 ChinaAI API. Not affiliated with DeepSeek, Alibaba, or Zhipu AI.</p>
+      <footer className="px-6 py-8 text-center text-gray-400 border-t border-gray-200">
+        <p>© 2025 ChinaAI API</p>
       </footer>
     </main>
   );

@@ -1,7 +1,7 @@
 import { handleGoogleCallback } from "@/lib/google-oauth";
 import { serializeCookie } from "@/lib/cookie-utils";
 
-export const runtime = "edge";
+export const runtime = "nodejs";
 
 export async function GET(request: Request) {
   const url = new URL(request.url);

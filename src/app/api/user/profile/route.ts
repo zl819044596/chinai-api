@@ -2,7 +2,7 @@ import { cookies } from "next/headers";
 import { verifySession } from "@/lib/session";
 import { getSession } from "@/lib/session-store";
 
-export const runtime = "edge";
+export const runtime = "nodejs";
 
 // 从 cookie 或 Authorization header 获取 token
 async function getToken(request: Request): Promise<string | null> {

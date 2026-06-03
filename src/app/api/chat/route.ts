@@ -7,7 +7,7 @@ import {
 } from "@/lib/auth-config";
 import { getModelConfig } from "@/lib/models";
 
-export const runtime = "edge";
+export const runtime = "nodejs";
 
 // Mock 响应（没有 API Key 时用于演示）
 function mockResponse(model: string, messages: { role: string; content: string }[]) {

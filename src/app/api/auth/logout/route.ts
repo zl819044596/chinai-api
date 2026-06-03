@@ -1,6 +1,6 @@
 import { serializeCookie } from "@/lib/cookie-utils";
 
-export const runtime = "edge";
+export const runtime = "nodejs";
 
 export async function GET() {
   const res = new Response(null, {

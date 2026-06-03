@@ -1,7 +1,7 @@
 import { cookies } from "next/headers";
 import { verifySession } from "@/lib/session";
 
-export const runtime = "edge";
+export const runtime = "nodejs";
 
 export async function GET() {
   const cookieStore = await cookies();

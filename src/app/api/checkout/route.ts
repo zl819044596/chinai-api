@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { STRIPE_SECRET_KEY, STRIPE_PRICES } from "@/lib/stripe";
 
-export const runtime = "edge";
+export const runtime = "nodejs";
 
 export async function POST(req: NextRequest) {
   try {
